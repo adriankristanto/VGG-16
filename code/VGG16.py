@@ -16,7 +16,7 @@ def p(n, f, s, out):
     out: output size
     """
     # out = (n + 2p -f)/s + 1
-    return (s * (out - 1) - n + f)/2
+    return (s * (out - 1) - n + f)//2
 
 class Net(nn.Module):
 
@@ -30,12 +30,12 @@ class Net(nn.Module):
             # CONV1
             # input size: input_size * input_size * 3
             # output size: input_size * input_size * 64
-            nn.Conv2d(in_channels=3, out_channels=64, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=3, out_channels=64, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV2
             # input size: input_size * input_size * 64
             # output size: input_size * input_size * 64
-            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # POOL2
             # input size: input_size * input_size * 64
@@ -44,12 +44,12 @@ class Net(nn.Module):
             # CONV3
             # input size: input_size/2 * input_size/2 * 64
             # output size: input_size/2 * input_size/2 * 128
-            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV4
             # input size: input_size/2 * input_size/2 * 128
             # output size: input_size/2 * input_size/2 * 128
-            nn.Conv2d(in_channels=128, out_channels=128, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=128, out_channels=128, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # POOL4
             # input size: input_size/2 * input_size/2 * 128
@@ -58,17 +58,17 @@ class Net(nn.Module):
             # CONV5
             # input size: input_size/4 * input_size/4 * 128
             # output size: input_size/4 * input_size/4 * 256
-            nn.Conv2d(in_channels=128, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=128, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV6
             # input size: input_size/4 * input_size/4 * 256
             # output size: input_size/4 * input_size/4 * 256
-            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV7
             # input size: input_size/4 * input_size/4 * 256
             # output size: input_size/4 * input_size/4 * 256
-            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # POOL7
             # input size: input_size/4 * input_size/4 * 256
@@ -77,17 +77,17 @@ class Net(nn.Module):
             # CONV8
             # input size: input_size/8 * input_size/8 * 256
             # output size: input_size/8 * input_size/8 * 512
-            nn.Conv2d(in_channels=256, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=256, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV9
             # input size: input_size/8 * input_size/8 * 512
             # output size: input_size/8 * input_size/8 * 512
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV10
             # input size: input_size/8 * input_size/8 * 512
             # output size: input_size/8 * input_size/8 * 512
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # POOL10
             # input size: input_size/8 * input_size/8 * 512
@@ -96,17 +96,17 @@ class Net(nn.Module):
             # CONV11
             # input size: input_size/16 * input_size/16 * 512
             # output size: input_size/16 * input_size/16 * 512
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV12
             # input size: input_size/16 * input_size/16 * 512
             # output size: input_size/16 * input_size/16 * 512
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # CONV13
             # input size: input_size/16 * input_size/16 * 512
             # output size: input_size/16 * input_size/16 * 512
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE, CONV_STRIDE, input_size)),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=CONV_KERNEL_SIZE, stride=CONV_STRIDE, padding=p(input_size, CONV_KERNEL_SIZE[0], CONV_STRIDE[0], input_size)),
             nn.ReLU(),
             # POOL13
             # input size: input_size/16 * input_size/16 * 512
@@ -118,7 +118,7 @@ class Net(nn.Module):
             # input size: input_size/32 * input_size/32 * 512
             # output size: 4096
             # Activation: ReLU
-            nn.Linear(input_size/32 * input_size/32 * 512, 4096),
+            nn.Linear(input_size//32 * input_size//32 * 512, 4096),
             nn.ReLU(),
             # FC15
             # input size: 4096
@@ -142,4 +142,9 @@ class Net(nn.Module):
 
 
 if __name__ == "__main__":
-    pass 
+    # test VGG16 configuration
+    net = Net(input_size=128, num_classes=2)
+    import torchvision.models as models
+    vgg16 = models.vgg16(pretrained=True)
+    print(vgg16)
+    print(net)
