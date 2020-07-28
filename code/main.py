@@ -1,8 +1,11 @@
 import torch
+import torch.nn as nn
+import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 import os
 from CelebADataset import CelebADataset
+import VGG16
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Current Device: {device}\n')
@@ -53,3 +56,14 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle
 
 # getting total images via the summation of length of each loader then * batch_size is invalid
 # as total images might not be divisible by batch_size
+
+# 2. instantiate the model
+net = VGG16.Net(input_size=128, num_classes=2)
+net.to(device)
+
+# 3. define the loss function
+criterion = nn.CrossEntropyLoss()
+
+# 4. define the optimizer
+LEARNING_RATE = 0.001
+optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
