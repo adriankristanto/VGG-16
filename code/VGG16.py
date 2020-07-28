@@ -135,7 +135,10 @@ class Net(nn.Module):
         )
 
     def forward(self, x):
-        pass
+        x = self.features(x)
+        x = torch.flatten(x, start_dim=1)
+        x = self.classifier(x)
+        return x
 
 
 if __name__ == "__main__":
