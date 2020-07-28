@@ -11,6 +11,11 @@ import os
 class CelebADataset(torch.utils.data.Dataset):
 
     def __init__(self, csv_file, root_dir, transform=None):
+        """
+        csv_file: csv file containing the image names & labels
+        root_dir: root directory containing the image files
+        transform: transformation function, which can be found in torchvision.transforms
+        """
         self.root_dir = root_dir
         self.transform = transform
         self.label_df = pd.read_csv(csv_file)
