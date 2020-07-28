@@ -105,14 +105,10 @@ optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
 
 # 5. train the model
 EPOCH = 2
-epoch_loss = 0.0
 for epoch in range(EPOCH):
     running_loss = 0.0
     net.train()
-    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH} | Loss {epoch_loss}'):
-
-        epoch_loss = 0.0
-
+    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
         optimizer.zero_grad()
@@ -125,7 +121,6 @@ for epoch in range(EPOCH):
         # 5e. update parameters
         optimizer.step()
 
-        epoch_loss = loss.item()
         running_loss += loss.item()
 
     # validation step
