@@ -7,6 +7,7 @@ import os
 from CelebADataset import CelebADataset
 import VGG16
 from tqdm import tqdm
+import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Current Device: {device}\n')
@@ -28,19 +29,22 @@ train_transform = transforms.Compose([
     # 128/32 = 4
     # therefore, the output of the last POOL layer would be 4x4x512
     transforms.Resize((128, 128)),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 val_transform = transforms.Compose([
     transforms.CenterCrop((178, 178)),
     transforms.Resize((128, 128)),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 test_transform = transforms.Compose([
     transforms.CenterCrop((178, 178)),
     transforms.Resize((128, 128)),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 BATCH_SIZE = 64
@@ -54,6 +58,36 @@ valloader = torch.utils.data.DataLoader(valset, batch_size=BATCH_SIZE, shuffle=T
 
 testset = CelebADataset(TEST_CSV, ROOT_DIR, test_transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+
+print(f'Total training data: {len(trainset)}')
+print(f'Total validation data: {len(valset)}')
+print(f'Total testing data: {len(testset)}')
+print(f'Total data; {len(trainset) + len(valset) + len(testset)}\n')
+
+# reference: https://discuss.pytorch.org/t/about-normalization-using-pre-trained-vgg16-networks/23560/8
+# def online_mean_and_sd(loader):
+#     """Compute the mean and sd in an online fashion
+
+#         Var[x] = E[X^2] - E^2[X]
+#     """
+#     cnt = 0
+#     fst_moment = torch.empty(3)
+#     snd_moment = torch.empty(3)
+
+#     for data in tqdm(loader):
+#         data, _ = data
+#         b, c, h, w = data.shape
+#         nb_pixels = b * h * w
+#         sum_ = torch.sum(data, dim=[0, 2, 3])
+#         sum_of_square = torch.sum(data ** 2, dim=[0, 2, 3])
+#         fst_moment = (cnt * fst_moment + sum_) / (cnt + nb_pixels)
+#         snd_moment = (cnt * snd_moment + sum_of_square) / (cnt + nb_pixels)
+
+#         cnt += nb_pixels
+
+#     return fst_moment, torch.sqrt(snd_moment - fst_moment ** 2)
+# print(online_mean_and_sd(trainloader))
+# (tensor([0.5084, 0.4224, 0.3768]), tensor([0.3049, 0.2824, 0.2809]))
 
 # getting total images via the summation of length of each loader then * batch_size is invalid
 # as total images might not be divisible by batch_size
@@ -92,7 +126,7 @@ for epoch in range(EPOCH):
     correct = 0
     total = 0
     with torch.no_grad():
-        for val_data in tqdm(valloader):
+        for val_data in tqdm(valloader, desc='Validating'):
             inputs, labels = val_data[0].to(device), val_data[1].to(device)
             outputs = net(inputs)
             correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
@@ -110,7 +144,7 @@ correct = 0
 total = 0
 
 with torch.no_grad():
-    for test_data in tqdm(testloader):
+    for test_data in tqdm(testloader, desc='Testing'):
         inputs, labels = test_data[0].to(device), test_data[1].to(device)
         outputs = net(inputs)
         correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
