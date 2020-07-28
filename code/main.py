@@ -50,3 +50,6 @@ valloader = torch.utils.data.DataLoader(valset, batch_size=BATCH_SIZE, shuffle=T
 
 testset = CelebADataset(TEST_CSV, ROOT_DIR, test_transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+
+# getting total images via the summation of length of each loader then * batch_size is invalid
+# as total images might not be divisible by batch_size
