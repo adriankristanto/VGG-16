@@ -43,7 +43,7 @@ test_transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-BATCH_SIZE = 256
+BATCH_SIZE = 64
 NUM_WORKERS = 0
 
 trainset = CelebADataset(TRAIN_CSV, ROOT_DIR, train_transform)
@@ -70,7 +70,7 @@ LEARNING_RATE = 0.001
 optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
 
 # 5. train the model
-EPOCH = 20
+EPOCH = 2
 for epoch in range(EPOCH):
     epoch_loss = 0.0
     for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
