@@ -105,11 +105,14 @@ optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
 
 # 5. train the model
 EPOCH = 2
+epoch_loss = 0.0
 for epoch in range(EPOCH):
-    epoch_loss = 0.0
     running_loss = 0.0
     net.train()
     for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH} | Loss {epoch_loss}'):
+
+        epoch_loss = 0.0
+
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
         optimizer.zero_grad()
@@ -136,7 +139,7 @@ for epoch in range(EPOCH):
             correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
             total += len(labels)
 
-    print(f'Training Loss: {epoch_loss / len(trainloader)}')
+    print(f'Training Loss: {running_loss / len(trainloader)}')
     print(f'Validation Accuracy: {correct / total * 100}%')
 
 # 6. save the trained model
