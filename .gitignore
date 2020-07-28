@@ -3,6 +3,4 @@
 .vscode/
 __pycache__/
 
-data/img_align_celeba/
-data/list_attr_celeba.txt
-data/list_eval_partition.txt
+data/
