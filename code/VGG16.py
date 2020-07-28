@@ -144,7 +144,10 @@ class Net(nn.Module):
 if __name__ == "__main__":
     # test VGG16 configuration
     net = Net(input_size=128, num_classes=2)
-    import torchvision.models as models
-    vgg16 = models.vgg16(pretrained=True)
-    print(vgg16)
+    # import torchvision.models as models
+    # vgg16 = models.vgg16(pretrained=True)
+    # print(vgg16)
     print(net)
+
+    x = torch.rand([1,3,128,128])
+    print(net(x))
