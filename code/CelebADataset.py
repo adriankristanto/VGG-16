@@ -42,11 +42,12 @@ class CelebADataset(torch.utils.data.Dataset):
         return image, label
 
 if __name__ == "__main__":
+    # test the custom dataset class
     TRAIN_CSV = os.path.dirname(os.path.realpath(__file__)) + '/../data/celeba-train.csv'
     ROOT_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../data/img_align_celeba'
     dataset = CelebADataset(TRAIN_CSV, ROOT_DIR, transforms.ToTensor())
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=False, num_workers=0)
-
+    # show the images
     dataiter = iter(dataloader)
     images, labels = dataiter.next()
     npimg = torchvision.utils.make_grid(images).numpy()
