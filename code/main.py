@@ -2,7 +2,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import os
-import CelebADataset
+from CelebADataset import CelebADataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Current Device: {device}\n')
