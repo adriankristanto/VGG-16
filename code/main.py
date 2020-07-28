@@ -6,6 +6,7 @@ import torchvision.transforms as transforms
 import os
 from CelebADataset import CelebADataset
 import VGG16
+from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Current Device: {device}\n')
@@ -67,3 +68,52 @@ criterion = nn.CrossEntropyLoss()
 # 4. define the optimizer
 LEARNING_RATE = 0.001
 optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
+
+# 5. train the model
+EPOCH = 20
+for epoch in range(EPOCH):
+    epoch_loss = 0.0
+    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
+        inputs, labels = train_data[0].to(device), train_data[1].to(device)
+        # 5a. zero the gradients
+        optimizer.zero_grad()
+        # 5b. forward propagation
+        outputs = net(inputs)
+        # 5c. compute loss
+        loss = criterion(outputs, labels)
+        # 5d. backward propagation
+        loss.backward()
+        # 5e. update parameters
+        optimizer.step()
+
+        epoch_loss += loss.item()
+
+    # validation step
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for val_data in tqdm(valloader):
+            inputs, labels = val_data[0].to(device), val_data[1].to(device)
+            outputs = net(inputs)
+            correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
+            total += len(labels)
+
+    print(f'Training Loss: {epoch_loss / len(trainloader)}')
+    print(f'Validation Accuracy: {correct / total * 100}%')
+
+# 6. save the trained model
+MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/vgg16.pth'
+torch.save(net.state_dict(), MODEL_PATH)
+
+# 7 . test the network
+correct = 0
+total = 0
+
+with torch.no_grad():
+    for test_data in tqdm(testloader):
+        inputs, labels = test_data[0].to(device), test_data[1].to(device)
+        outputs = net(inputs)
+        correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
+        total += len(labels)
+
+print(f'Testing Accuracy: {correct/total * 100}%')
