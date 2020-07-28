@@ -54,10 +54,10 @@ trainset = CelebADataset(TRAIN_CSV, ROOT_DIR, train_transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
 
 valset = CelebADataset(VAL_CSV, ROOT_DIR, val_transform)
-valloader = torch.utils.data.DataLoader(valset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+valloader = torch.utils.data.DataLoader(valset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
 
 testset = CelebADataset(TEST_CSV, ROOT_DIR, test_transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
 
 print(f'Total training data: {len(trainset)}')
 print(f'Total validation data: {len(valset)}')
