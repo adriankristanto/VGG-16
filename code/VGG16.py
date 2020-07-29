@@ -96,6 +96,9 @@ class Net(nn.Module):
         x = self.pool(x)
         # reference: https://discuss.pytorch.org/t/adaptive-avg-pool2d-vs-avg-pool2d/27011
         # adaptive pooling can be used when the input size is variable
+        # this is to ensure that the output of the last feature extractor
+        # matches the input of the fully connected layer
+        # no matter what the input image size is
         x = self.adapt_pool(x)
         # Flatten
         x = torch.flatten(x, start_dim=1)
@@ -127,26 +130,26 @@ if __name__ == "__main__":
     # test VGG16 configuration
     net = Net(input_size=128, num_classes=2)
     # net.initialise_weights()
-    import torchvision.models as models
-    vgg16 = models.vgg16()
-    num_features = vgg16.classifier[6].in_features
-    vgg16.classifier[6] = nn.Linear(num_features, 2)
-    from prettytable import PrettyTable
-    # reference: https://stackoverflow.com/questions/49201236/check-the-total-number-of-parameters-in-a-pytorch-model#:~:text=To%20get%20the%20parameter%20count,name%20and%20the%20parameter%20itself.
-    def count_parameters(model):
-        table = PrettyTable(["Modules", "Parameters"])
-        total_params = 0
-        for name, parameter in model.named_parameters():
-            if not parameter.requires_grad: continue
-            param = parameter.numel()
-            table.add_row([name, param])
-            total_params+=param
-        print(table)
-        print(f"Total Trainable Params: {total_params}")
-        return total_params
+    # import torchvision.models as models
+    # vgg16 = models.vgg16()
+    # num_features = vgg16.classifier[6].in_features
+    # vgg16.classifier[6] = nn.Linear(num_features, 2)
+    # from prettytable import PrettyTable
+    # # reference: https://stackoverflow.com/questions/49201236/check-the-total-number-of-parameters-in-a-pytorch-model#:~:text=To%20get%20the%20parameter%20count,name%20and%20the%20parameter%20itself.
+    # def count_parameters(model):
+    #     table = PrettyTable(["Modules", "Parameters"])
+    #     total_params = 0
+    #     for name, parameter in model.named_parameters():
+    #         if not parameter.requires_grad: continue
+    #         param = parameter.numel()
+    #         table.add_row([name, param])
+    #         total_params+=param
+    #     print(table)
+    #     print(f"Total Trainable Params: {total_params}")
+    #     return total_params
         
-    count_parameters(net)
-    count_parameters(vgg16)
+    # count_parameters(net)
+    # count_parameters(vgg16)
 
     # x = torch.rand([1,3,128,128])
     # print(net(x))
