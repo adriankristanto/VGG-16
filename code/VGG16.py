@@ -112,7 +112,7 @@ class Net(nn.Module):
                     nn.init.constant_(module.bias, 0)
             elif isinstance(module, nn.Linear):
                 nn.init.xavier_uniform_(module.weight)
-                nn.init.contanst_(module.bias, 0)
+                nn.init.constant_(module.bias, 0)
 
 
 if __name__ == "__main__":
