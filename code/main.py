@@ -47,8 +47,8 @@ test_transform = transforms.Compose([
     transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
-# google colab can train on 256 samples per batch
-# BATCH_SIZE = 256
+# google colab can train on 128 samples per batch
+# BATCH_SIZE = 128
 BATCH_SIZE = 64
 NUM_WORKERS = 0
 
@@ -140,11 +140,11 @@ for epoch in range(EPOCH):
     # validation step
     net.eval()
     with torch.no_grad():
-        trainacc = compute_accuracy(net, trainloader)
+        # trainacc = compute_accuracy(net, trainloader)
         valacc = compute_accuracy(net, valloader)
 
     print(f'Training Loss: {running_loss / len(trainloader)}')
-    print(f'Training Accuracy: {trainacc}%')
+    # print(f'Training Accuracy: {trainacc}%')
     print(f'Validation Accuracy: {valacc}%')
 
 # 6. save the trained model
