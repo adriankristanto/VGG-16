@@ -138,6 +138,7 @@ for epoch in range(EPOCH):
         running_loss += loss.item()
 
     # validation step
+    net.eval()
     with torch.no_grad():
         trainacc = compute_accuracy(net, trainloader)
         valacc = compute_accuracy(net, valloader)
@@ -154,6 +155,7 @@ torch.save(net.state_dict(), MODEL_PATH)
 correct = 0
 total = 0
 
+net.eval()
 with torch.no_grad():
     testacc = compute_accuracy(net, testloader)
 
