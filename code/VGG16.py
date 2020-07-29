@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F 
 
+# reference: https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 # padding calculation for CONV layer as POOL layer doesn't require padding
 # each CONV has the same configuration
 # s = 1, f = 3 and we want 'same' padding
@@ -17,7 +18,7 @@ p = (3-1)/2 = 1
 
 class Net(nn.Module):
 
-    def __init__(self, input_size=224, num_classes=1000):
+    def __init__(self, input_size=224, num_classes=1000, init_params=True):
         """
         input_size: int, size of input image, by default it is set to 224
         num_classes: int, total number of classes that an input image may belong to, by default it is set to 1000
@@ -47,6 +48,9 @@ class Net(nn.Module):
         self.fc16 = nn.Linear(4096, num_classes)
 
         self.pool = nn.MaxPool2d(kernel_size=(2,2), stride=(2,2))
+
+        if init_params:
+            self.initialise_weights()
 
     def forward(self, x):
         # CONV1 -> ReLU -> CONV2 -> ReLU -> POOL
@@ -98,10 +102,23 @@ class Net(nn.Module):
         x = F.softmax(x, dim=1)
         return x
 
+    def initialise_weights(self):
+        for module in self.modules():
+            if isinstance(module, nn.Conv2d):
+                # initialise CONV layers' weights with xavier_uniform_
+                nn.init.xavier_uniform_(module.weight)
+                # initialise the bias to 0
+                if module.bias is not None:
+                    nn.init.constant_(module.bias, 0)
+            elif isinstance(module, nn.Linear):
+                nn.init.xavier_uniform_(module.weight)
+                nn.init.contanst_(module.bias, 0)
+
 
 if __name__ == "__main__":
     # test VGG16 configuration
     net = Net(input_size=128, num_classes=2)
+    net.initialise_weights()
     # import torchvision.models as models
     # vgg16 = models.vgg16()
     # num_features = vgg16.classifier[6].in_features
