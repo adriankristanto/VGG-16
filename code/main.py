@@ -101,10 +101,10 @@ criterion = nn.CrossEntropyLoss()
 
 # 4. define the optimizer
 LEARNING_RATE = 0.001
-optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
+optimizer = optim.SGD(net.parameters(), lr=LEARNING_RATE, momentum=0.9)
 
 # 5. train the model
-EPOCH = 2
+EPOCH = 20
 for epoch in range(EPOCH):
     running_loss = 0.0
     net.train()
