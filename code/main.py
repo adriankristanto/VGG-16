@@ -47,6 +47,8 @@ test_transform = transforms.Compose([
     transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
+# google colab can train on 256 samples per batch
+# BATCH_SIZE = 256
 BATCH_SIZE = 64
 NUM_WORKERS = 0
 
