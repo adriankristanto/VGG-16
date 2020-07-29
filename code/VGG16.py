@@ -90,8 +90,10 @@ class Net(nn.Module):
         # FC14 -> ReLU -> FC15 -> ReLU -> FC16 -> Softmax
         x = self.fc14(x)
         x = F.relu(x)
+        x = F.dropout(x)
         x = self.fc15(x)
         x = F.relu(x)
+        x = F.dropout(x)
         x = self.fc16(x)
         x = F.softmax(x, dim=1)
         return x
