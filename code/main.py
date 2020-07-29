@@ -103,6 +103,18 @@ criterion = nn.CrossEntropyLoss()
 LEARNING_RATE = 0.001
 optimizer = optim.SGD(net.parameters(), lr=LEARNING_RATE, momentum=0.9)
 
+#######################################################################
+def compute_accuracy(net, dataloader):
+    correct = 0
+    total = 0
+    for data in tqdm(dataloader):
+            inputs, labels = data[0].to(device), data[1].to(device)
+            outputs = net(inputs)
+            correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
+            total += len(labels)
+    return correct / total * 100
+#######################################################################
+
 # 5. train the model
 EPOCH = 20
 for epoch in range(EPOCH):
@@ -124,18 +136,13 @@ for epoch in range(EPOCH):
         running_loss += loss.item()
 
     # validation step
-    correct = 0
-    total = 0
-    net.eval()
     with torch.no_grad():
-        for val_data in tqdm(valloader, desc='Validating'):
-            inputs, labels = val_data[0].to(device), val_data[1].to(device)
-            outputs = net(inputs)
-            correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
-            total += len(labels)
+        trainacc = compute_accuracy(net, trainloader)
+        valacc = compute_accuracy(net, valloader)
 
     print(f'Training Loss: {running_loss / len(trainloader)}')
-    print(f'Validation Accuracy: {correct / total * 100}%')
+    print(f'Training Accuracy: {trainacc}%')
+    print(f'Validation Accuracy: {valacc}%')
 
 # 6. save the trained model
 MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/vgg16.pth'
@@ -146,10 +153,6 @@ correct = 0
 total = 0
 
 with torch.no_grad():
-    for test_data in tqdm(testloader, desc='Testing'):
-        inputs, labels = test_data[0].to(device), test_data[1].to(device)
-        outputs = net(inputs)
-        correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
-        total += len(labels)
+    testacc = compute_accuracy(net, testloader)
 
-print(f'Testing Accuracy: {correct/total * 100}%')
+print(f'Testing Accuracy: {testacc}%')
