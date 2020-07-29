@@ -101,9 +101,12 @@ if __name__ == "__main__":
     # test VGG16 configuration
     net = Net(input_size=128, num_classes=2)
     # import torchvision.models as models
-    # vgg16 = models.vgg16(pretrained=True)
+    # vgg16 = models.vgg16()
+    # num_features = vgg16.classifier[6].in_features
+    # vgg16.classifier[6] = nn.Linear(num_features, 2)
     # print(vgg16)
-    print(net)
+    # print(net)
 
-    x = torch.rand([1,3,128,128])
-    print(net(x))
+    # x = torch.rand([1,3,128,128])
+    # print(net(x))
+    # print(F.softmax(vgg16(x), dim=1))
