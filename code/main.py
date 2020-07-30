@@ -101,6 +101,8 @@ net.to(device)
 criterion = nn.CrossEntropyLoss()
 
 # 4. define the optimizer
+# reference: https://medium.com/@youebned/notes-on-training-vgg16-7ae99689fd5
+# following the paper to use momentum instead of adam optimiser
 LEARNING_RATE = 0.001
 optimizer = optim.SGD(net.parameters(), lr=LEARNING_RATE, momentum=0.9)
 
