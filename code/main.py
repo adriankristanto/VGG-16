@@ -124,7 +124,7 @@ def compute_accuracy(net, dataloader):
 # path to directory where the checkpoint will be stored
 MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 # for google colab
-# MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
+# MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
 CONTINUE_TRAIN = False
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
