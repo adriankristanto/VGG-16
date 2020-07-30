@@ -125,23 +125,23 @@ def compute_accuracy(net, dataloader):
 MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 # for google colab
 # MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
-CONTINUE_TRAIN = True
+CONTINUE_TRAIN = False
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
-EPOCH = 20 - next_epoch
+EPOCH = 20
 # save the model every SAVE_INTERVAL epoch
 SAVE_INTERVAL = 10
 ########################################################################
 
 next_epoch = 0
 if CONTINUE_TRAIN:
-    checkpoint = torch.load(MODEL_DIRPATH)
+    checkpoint = torch.load(CONTINUE_TRAIN_NAME)
     net.load_state_dict(checkpoint.get('net_state_dict'))
     optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
     print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
     next_epoch = checkpoint.get('epoch')
 
-for epoch in range(EPOCH):
+for epoch in range(EPOCH - next_epoch):
     running_loss = 0.0
     net.train()
     for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
