@@ -182,7 +182,13 @@ for epoch in range(EPOCH - next_epoch):
     print(f'Validation Accuracy: {valacc}%')
 
 # 6. save the trained model
-torch.save(net.state_dict(), MODEL_DIRPATH + 'model-final.pth')
+torch.save({
+            # since the currect epoch has been completed, save the next epoch
+            'epoch' : EPOCH,
+            'net_state_dict' : net.state_dict(),
+            'optimizer_state_dict' : optimizer.state_dict(),
+            'valacc' : valacc
+        }, MODEL_DIRPATH + f'model-epoch{EPOCH}.pth')
 
 # 7 . test the network
 net.eval()
