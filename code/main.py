@@ -169,9 +169,6 @@ for epoch in range(EPOCH):
 torch.save(net.state_dict(), MODEL_DIRPATH + 'model-final.pth')
 
 # 7 . test the network
-correct = 0
-total = 0
-
 net.eval()
 with torch.no_grad():
     testacc = compute_accuracy(net, testloader)
