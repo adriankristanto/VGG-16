@@ -119,12 +119,18 @@ def compute_accuracy(net, dataloader):
 #######################################################################
 
 # 5. train the model
+#######################################################################
 # GOOGLE COLAB: CHANGE MODEL_DIRPATH
 # path to directory where the checkpoint will be stored
 MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
+# for google colab
 # MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
 CONTINUE_TRAIN = True
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
+# since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
+EPOCH = 20 - next_epoch
+########################################################################
+
 next_epoch = 0
 if CONTINUE_TRAIN:
     checkpoint = torch.load(MODEL_DIRPATH)
@@ -133,8 +139,6 @@ if CONTINUE_TRAIN:
     print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
     next_epoch = checkpoint.get('epoch')
 
-# since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
-EPOCH = 20 - next_epoch
 for epoch in range(EPOCH):
     running_loss = 0.0
     net.train()
