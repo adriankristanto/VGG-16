@@ -94,7 +94,7 @@ print(f'Total data; {len(trainset) + len(valset) + len(testset)}\n')
 # as total images might not be divisible by batch_size
 
 # 2. instantiate the model
-net = VGG16.Net(input_size=128, num_classes=2)
+net = VGG16.Net(num_classes=2)
 net.to(device)
 
 # 3. define the loss function
@@ -129,6 +129,8 @@ CONTINUE_TRAIN = True
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
 EPOCH = 20 - next_epoch
+# save the model every SAVE_INTERVAL epoch
+SAVE_INTERVAL = 10
 ########################################################################
 
 next_epoch = 0
@@ -166,7 +168,7 @@ for epoch in range(EPOCH):
     # save the trained model every 10 epochs
     # reference: https://discuss.pytorch.org/t/how-resume-the-saved-trained-model-at-specific-epoch/35823/3
     # reference: https://pytorch.org/tutorials/beginner/saving_loading_models.html
-    if (epoch + 1) % 10 == 0:
+    if (epoch + 1) % SAVE_INTERVAL == 0:
         torch.save({
             # since the currect epoch has been completed, save the next epoch
             'epoch' : epoch + 1,
