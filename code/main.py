@@ -49,7 +49,7 @@ test_transform = transforms.Compose([
 ])
 
 # GOOGLE COLAB: CHANGE BATCH_SIZE
-BATCH_SIZE = 64
+BATCH_SIZE = 256
 NUM_WORKERS = 0
 
 trainset = CelebADataset(TRAIN_CSV, ROOT_DIR, train_transform)
@@ -129,7 +129,7 @@ MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 CONTINUE_TRAIN = False
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
-EPOCH = 20
+EPOCH = 50
 # save the model every SAVE_INTERVAL epoch
 SAVE_INTERVAL = 10
 ########################################################################
