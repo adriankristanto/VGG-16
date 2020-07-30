@@ -18,9 +18,8 @@ p = (3-1)/2 = 1
 
 class Net(nn.Module):
 
-    def __init__(self, input_size=224, num_classes=1000, init_params=True):
+    def __init__(self, num_classes=1000, init_params=True):
         """
-        input_size: int, size of input image, by default it is set to 224
         num_classes: int, total number of classes that an input image may belong to, by default it is set to 1000
         """
         super(Net, self).__init__()
@@ -42,7 +41,6 @@ class Net(nn.Module):
         self.conv12 = nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3,3), stride=(1,1), padding=1)
         self.conv13 = nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3,3), stride=(1,1), padding=1)
 
-        # conv_output = (input_size // 32) * (input_size // 32) * 512
         self.fc14 = nn.Linear(7*7*512, 4096)
         self.fc15 = nn.Linear(4096, 4096)
         self.fc16 = nn.Linear(4096, num_classes)
@@ -128,7 +126,7 @@ class Net(nn.Module):
 
 if __name__ == "__main__":
     # test VGG16 configuration
-    net = Net(input_size=128, num_classes=2)
+    net = Net(num_classes=2)
     # net.initialise_weights()
     # import torchvision.models as models
     # vgg16 = models.vgg16()
