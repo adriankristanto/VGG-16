@@ -123,8 +123,18 @@ def compute_accuracy(net, dataloader):
 # path to directory where the checkpoint will be stored
 MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 # MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
+CONTINUE_TRAIN = True
+CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
+next_epoch = 0
+if CONTINUE_TRAIN:
+    checkpoint = torch.load(MODEL_DIRPATH)
+    net.load_state_dict(checkpoint.get('net_state_dict'))
+    optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
+    print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
+    next_epoch = checkpoint.get('epoch')
 
-EPOCH = 20
+# since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
+EPOCH = 20 - next_epoch
 for epoch in range(EPOCH):
     running_loss = 0.0
     net.train()
