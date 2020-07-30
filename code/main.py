@@ -47,8 +47,7 @@ test_transform = transforms.Compose([
     transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
-# google colab can train on 128 samples per batch
-# BATCH_SIZE = 128
+# GOOGLE COLAB: CHANGE BATCH_SIZE
 BATCH_SIZE = 64
 NUM_WORKERS = 0
 
@@ -148,6 +147,7 @@ for epoch in range(EPOCH):
     print(f'Validation Accuracy: {valacc}%')
 
 # 6. save the trained model
+# GOOGLE COLAB: CHANGE MODEL_PATH
 MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/vgg16.pth'
 torch.save(net.state_dict(), MODEL_PATH)
 
