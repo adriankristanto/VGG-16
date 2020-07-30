@@ -50,7 +50,7 @@ class Net(nn.Module):
         # (7,7) is the output height & width expected by the fully connected layers
         # in adaptive pooling, we can simply choose the output size & let pytorch determine
         # the kernel size, stride and padding
-        self.adapt_pool = nn.AdaptiveAvgPool2d((7, 7))
+        self.adapt_pool = nn.AdaptiveMaxPool2d((7, 7))
 
         if init_params:
             self.initialise_weights()
@@ -114,13 +114,14 @@ class Net(nn.Module):
     def initialise_weights(self):
         for module in self.modules():
             if isinstance(module, nn.Conv2d):
-                # initialise CONV layers' weights with xavier_uniform_
-                nn.init.xavier_uniform_(module.weight)
+                # reference: https://medium.com/ai%C2%B3-theory-practice-business/the-rectified-linear-unit-relu-and-kaiming-initialization-4c7a981dfd21
+                # reference: https://stackoverflow.com/questions/61848635/how-to-decide-which-mode-to-use-for-kaiming-normal-initialization
+                nn.init.kaiming_normal_(module.weight, mode='fan_out', nonlinearity='relu')
                 # initialise the bias to 0
                 if module.bias is not None:
                     nn.init.constant_(module.bias, 0)
             elif isinstance(module, nn.Linear):
-                nn.init.xavier_uniform_(module.weight)
+                nn.init.kaiming_normal_(module.weight, mode='fan_out', nonlinearity='relu')
                 nn.init.constant_(module.bias, 0)
 
 
