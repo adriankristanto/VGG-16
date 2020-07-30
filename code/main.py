@@ -29,6 +29,7 @@ train_transform = transforms.Compose([
     # 128/32 = 4
     # therefore, the output of the last POOL layer would be 4x4x512
     transforms.Resize((128, 128)),
+    transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
