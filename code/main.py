@@ -119,6 +119,11 @@ def compute_accuracy(net, dataloader):
 #######################################################################
 
 # 5. train the model
+# GOOGLE COLAB: CHANGE MODEL_DIRPATH
+# path to directory where the checkpoint will be stored
+MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
+# MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
+
 EPOCH = 20
 for epoch in range(EPOCH):
     running_loss = 0.0
@@ -143,15 +148,25 @@ for epoch in range(EPOCH):
     with torch.no_grad():
         # trainacc = compute_accuracy(net, trainloader)
         valacc = compute_accuracy(net, valloader)
+    
+    # save the trained model every 10 epochs
+    # reference: https://discuss.pytorch.org/t/how-resume-the-saved-trained-model-at-specific-epoch/35823/3
+    # reference: https://pytorch.org/tutorials/beginner/saving_loading_models.html
+    if (epoch + 1) % 10 == 0:
+        torch.save({
+            # since the currect epoch has been completed, save the next epoch
+            'epoch' : epoch + 1,
+            'net_state_dict' : net.state_dict(),
+            'optimizer_state_dict' : optimizer.state_dict(),
+            'valacc' : valacc
+        }, MODEL_DIRPATH + f'model-epoch{epoch + 1}.pth')
 
     print(f'Training Loss: {running_loss / len(trainloader)}')
     # print(f'Training Accuracy: {trainacc}%')
     print(f'Validation Accuracy: {valacc}%')
 
 # 6. save the trained model
-# GOOGLE COLAB: CHANGE MODEL_PATH
-MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/vgg16.pth'
-torch.save(net.state_dict(), MODEL_PATH)
+torch.save(net.state_dict(), MODEL_DIRPATH + 'model-final.pth')
 
 # 7 . test the network
 correct = 0
