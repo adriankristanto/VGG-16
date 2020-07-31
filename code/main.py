@@ -29,7 +29,7 @@ train_transform = transforms.Compose([
     # 128/32 = 4
     # therefore, the output of the last POOL layer would be 4x4x512
     transforms.Resize((128, 128)),
-    transforms.RandomHorizontalFlip(),
+    # transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
@@ -145,7 +145,7 @@ if CONTINUE_TRAIN:
 for epoch in range(EPOCH - next_epoch):
     running_loss = 0.0
     net.train()
-    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
+    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH - next_epoch}'):
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
         optimizer.zero_grad()
