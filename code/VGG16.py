@@ -50,7 +50,7 @@ class Net(nn.Module):
         # (7,7) is the output height & width expected by the fully connected layers
         # in adaptive pooling, we can simply choose the output size & let pytorch determine
         # the kernel size, stride and padding
-        self.adapt_pool = nn.AdaptiveMaxPool2d((7, 7))
+        self.adapt_pool = nn.AdaptiveAvgPool2d((7, 7))
 
         if init_params:
             self.initialise_weights()
