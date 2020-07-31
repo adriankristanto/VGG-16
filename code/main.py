@@ -21,31 +21,29 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../data/img_align_cel
 # reference: https://github.com/rasbt/deeplearning-models/blob/master/pytorch_ipynb/cnn/cnn-vgg16-celeba.ipynb
 # celebA image shape = (218, 178, 3)
 # VGG-16 accepts (224, 224, 3) image by default
-# we need to make the celebA images to be a square & divisible by 32
-# divisible by 32 as the image will be passed through 5 MAX_POOL which will reduce the size by the factor of 2
+# adaptive pool helps with the variable-sized input
+MEAN = (0.5063, 0.4258, 0.3832)
+STD = (0.3107, 0.2904, 0.2897)
 train_transform = transforms.Compose([
-    # take the smaller edge of the image (218, 178)
-    transforms.CenterCrop((178, 178)),
-    # 128/32 = 4
-    # therefore, the output of the last POOL layer would be 4x4x512
-    transforms.Resize((128, 128)),
     # transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
-    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
+    # not cropped:
+    # (tensor([0.5063, 0.4258, 0.3832]), tensor([0.3107, 0.2904, 0.2897]))
+    transforms.Normalize(MEAN, STD)
+    # cropped: 
+    # transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 val_transform = transforms.Compose([
-    transforms.CenterCrop((178, 178)),
-    transforms.Resize((128, 128)),
     transforms.ToTensor(),
-    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
+    transforms.Normalize(MEAN, STD)
+    #transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 test_transform = transforms.Compose([
-    transforms.CenterCrop((178, 178)),
-    transforms.Resize((128, 128)),
     transforms.ToTensor(),
-    transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
+    transforms.Normalize(MEAN, STD)
+    #transforms.Normalize((0.5084, 0.4224, 0.3768), (0.3049, 0.2824, 0.2809))
 ])
 
 # GOOGLE COLAB: CHANGE BATCH_SIZE
@@ -67,6 +65,7 @@ print(f'Total testing data: {len(testset)}')
 print(f'Total data; {len(trainset) + len(valset) + len(testset)}\n')
 
 # reference: https://discuss.pytorch.org/t/about-normalization-using-pre-trained-vgg16-networks/23560/8
+# import sys
 # def online_mean_and_sd(loader):
 #     """Compute the mean and sd in an online fashion
 
@@ -89,6 +88,7 @@ print(f'Total data; {len(trainset) + len(valset) + len(testset)}\n')
 
 #     return fst_moment, torch.sqrt(snd_moment - fst_moment ** 2)
 # print(online_mean_and_sd(trainloader))
+# sys.exit(1)
 # (tensor([0.5084, 0.4224, 0.3768]), tensor([0.3049, 0.2824, 0.2809]))
 
 # getting total images via the summation of length of each loader then * batch_size is invalid

@@ -38,7 +38,10 @@ if __name__ == "__main__":
     # predict image
     IMAGE_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../sample/'
     IMAGE_NAME = 'sample1.jpg'
-    # plt.imshow(np.transpose(transform(PIL.Image.open(IMAGE_PATH + IMAGE_NAME)), (1,2,0)))
+    # image = PIL.Image.open(IMAGE_PATH + IMAGE_NAME)
+    # image_tensor = transforms.ToTensor()(image)
+    # print(image_tensor.shape)
+    # plt.imshow(np.transpose(transforms.ToTensor()(PIL.Image.open(IMAGE_PATH + IMAGE_NAME)), (1,2,0)))
     # plt.show()
     net.eval()
     with torch.no_grad():

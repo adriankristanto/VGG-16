@@ -150,6 +150,6 @@ if __name__ == "__main__":
     # count_parameters(net)
     # count_parameters(vgg16)
 
-    # x = torch.rand([1,3,128,128])
-    # print(net(x))
+    x = torch.rand([1,3,178,218])
+    print(net(x))
     # print(F.softmax(vgg16(x), dim=1))
