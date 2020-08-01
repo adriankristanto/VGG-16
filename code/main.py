@@ -25,7 +25,7 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../data/img_align_cel
 MEAN = (0.5063, 0.4258, 0.3832)
 STD = (0.3107, 0.2904, 0.2897)
 train_transform = transforms.Compose([
-    # transforms.RandomHorizontalFlip(),
+    transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     # not cropped:
     # (tensor([0.5063, 0.4258, 0.3832]), tensor([0.3107, 0.2904, 0.2897]))
@@ -123,15 +123,15 @@ def compute_accuracy(net, dataloader):
 #######################################################################
 # GOOGLE COLAB: CHANGE MODEL_DIRPATH
 # path to directory where the checkpoint will be stored
-MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
+# MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 # for google colab
-# MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
+MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../../drive/My Drive/VGG-16/model/'
 CONTINUE_TRAIN = False
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
 EPOCH = 50
 # save the model every SAVE_INTERVAL epoch
-SAVE_INTERVAL = 10
+SAVE_INTERVAL = 5
 ########################################################################
 
 next_epoch = 0
