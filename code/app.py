@@ -30,10 +30,14 @@ def predict(image_path):
 if __name__ == "__main__":
     # load the model
     FILEPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
-    FILENAME = 'vgg16.pth'
+    FILENAME = 'model-epoch10.pth'
     net = VGG16.Net(num_classes=2)
     # reference: https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-model-across-devices
-    net.load_state_dict(torch.load(FILEPATH + FILENAME,  map_location=device))
+    checkpoint = torch.load(CONTINUE_TRAIN_NAME)
+    net.load_state_dict(checkpoint.get('net_state_dict'), map_location=device)
+    # optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
+    # print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
+    # next_epoch = checkpoint.get('epoch')
 
     # predict image
     IMAGE_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../sample/'
