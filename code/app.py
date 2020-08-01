@@ -23,6 +23,10 @@ CLASSES = ['Female', 'Male']
 def predict(image_path):
     image = PIL.Image.open(image_path)
     img_tensor = transform(image).unsqueeze_(0)
+    # reference: https://github.com/pytorch/pytorch/issues/26338
+    # functional dropout can't be turned off using net.eval()
+    # they must be turned off manually
+    net.eval()
     output = net(img_tensor)
     prob, index = torch.max(output, dim=1)
     return prob.item(), CLASSES[index.item()]
@@ -33,21 +37,19 @@ if __name__ == "__main__":
     FILENAME = 'model-epoch10.pth'
     net = VGG16.Net(num_classes=2)
     # reference: https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-model-across-devices
-    checkpoint = torch.load(CONTINUE_TRAIN_NAME)
-    net.load_state_dict(checkpoint.get('net_state_dict'), map_location=device)
+    checkpoint = torch.load(FILEPATH + FILENAME, map_location=device)
+    net.load_state_dict(checkpoint.get('net_state_dict'))
     # optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
     # print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
     # next_epoch = checkpoint.get('epoch')
 
     # predict image
     IMAGE_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../sample/'
-    IMAGE_NAME = 'sample1.jpg'
+    IMAGE_NAME = 'sample2.jpg'
     # image = PIL.Image.open(IMAGE_PATH + IMAGE_NAME)
     # image_tensor = transforms.ToTensor()(image)
     # print(image_tensor.shape)
     # plt.imshow(np.transpose(transforms.ToTensor()(PIL.Image.open(IMAGE_PATH + IMAGE_NAME)), (1,2,0)))
     # plt.show()
-    net.eval()
-    with torch.no_grad():
-        prob, pred = predict(IMAGE_PATH + IMAGE_NAME)
-        print(f'prediction: {prob * 100:.2f}% {pred}')
+    prob, pred = predict(IMAGE_PATH + IMAGE_NAME)
+    print(f'prediction: {prob * 100:.2f}% {pred}')

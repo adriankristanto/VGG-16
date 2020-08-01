@@ -103,10 +103,10 @@ class Net(nn.Module):
         # FC14 -> ReLU -> FC15 -> ReLU -> FC16 -> Softmax
         x = self.fc14(x)
         x = F.relu(x)
-        x = F.dropout(x)
+        x = F.dropout(x, training=self.training)
         x = self.fc15(x)
         x = F.relu(x)
-        x = F.dropout(x)
+        x = F.dropout(x, training=self.training)
         x = self.fc16(x)
         x = F.softmax(x, dim=1)
         return x
@@ -151,5 +151,6 @@ if __name__ == "__main__":
     # count_parameters(vgg16)
 
     x = torch.rand([1,3,178,218])
+    net.eval()
     print(net(x))
     # print(F.softmax(vgg16(x), dim=1))
