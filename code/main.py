@@ -145,6 +145,7 @@ if CONTINUE_TRAIN:
 for epoch in range(EPOCH - next_epoch):
     running_loss = 0.0
     net.train()
+    print(f'Currently training: {net.training}')
     for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH - next_epoch}'):
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
@@ -162,6 +163,7 @@ for epoch in range(EPOCH - next_epoch):
 
     # validation step
     net.eval()
+    print(f'Currently training: {net.training}')
     with torch.no_grad():
         # trainacc = compute_accuracy(net, trainloader)
         valacc = compute_accuracy(net, valloader)
@@ -193,7 +195,7 @@ torch.save({
 
 # 7 . test the network
 net.eval()
-with torch.no_grad():
-    testacc = compute_accuracy(net, testloader)
+print(f'Currently training: {net.training}')
+testacc = compute_accuracy(net, testloader)
 
 print(f'Testing Accuracy: {testacc}%')
