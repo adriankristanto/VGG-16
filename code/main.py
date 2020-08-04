@@ -96,6 +96,12 @@ print(f'Total data: {len(trainset) + len(valset) + len(testset)}\n', flush=True)
 
 # 2. instantiate the model
 net = VGG16.Net(num_classes=2)
+
+# reference: https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html#create-model-and-dataparallel
+if torch.cuda.device_count() > 1:
+    print(f'Number of GPUs: {torch.cuda.device_count()}', flush=True)
+    net = nn.DataParallel(net)
+
 net.to(device)
 
 # 3. define the loss function
