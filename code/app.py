@@ -40,12 +40,12 @@ if __name__ == "__main__":
     checkpoint = torch.load(FILEPATH + FILENAME, map_location=device)
     net.load_state_dict(checkpoint.get('net_state_dict'))
     # optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
-    # print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
+    print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
     # next_epoch = checkpoint.get('epoch')
 
     # predict image
     IMAGE_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../sample/'
-    IMAGE_NAME = 'sample2.jpg'
+    IMAGE_NAME = 'sample1.jpg'
     # image = PIL.Image.open(IMAGE_PATH + IMAGE_NAME)
     # image_tensor = transforms.ToTensor()(image)
     # print(image_tensor.shape)
