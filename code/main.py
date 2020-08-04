@@ -47,7 +47,7 @@ test_transform = transforms.Compose([
 ])
 
 # GOOGLE COLAB: CHANGE BATCH_SIZE
-BATCH_SIZE = 128
+BATCH_SIZE = 256
 NUM_WORKERS = 0
 
 trainset = CelebADataset(TRAIN_CSV, ROOT_DIR, train_transform)
