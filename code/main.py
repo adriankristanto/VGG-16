@@ -10,7 +10,7 @@ from tqdm import tqdm
 import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f'Current Device: {device}\n')
+print(f'Current Device: {device}\n', flush=True)
 
 # 1. load the data
 TRAIN_CSV = os.path.dirname(os.path.realpath(__file__)) + '/../data/celeba-train.csv'
@@ -59,10 +59,10 @@ valloader = torch.utils.data.DataLoader(valset, batch_size=BATCH_SIZE, shuffle=F
 testset = CelebADataset(TEST_CSV, ROOT_DIR, test_transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
 
-print(f'Total training data: {len(trainset)}')
-print(f'Total validation data: {len(valset)}')
-print(f'Total testing data: {len(testset)}')
-print(f'Total data; {len(trainset) + len(valset) + len(testset)}\n')
+print(f'Total training data: {len(trainset)}', flush=True)
+print(f'Total validation data: {len(valset)}', flush=True)
+print(f'Total testing data: {len(testset)}', flush=True)
+print(f'Total data: {len(trainset) + len(valset) + len(testset)}\n', flush=True)
 
 # reference: https://discuss.pytorch.org/t/about-normalization-using-pre-trained-vgg16-networks/23560/8
 # import sys
@@ -139,13 +139,13 @@ if CONTINUE_TRAIN:
     checkpoint = torch.load(CONTINUE_TRAIN_NAME)
     net.load_state_dict(checkpoint.get('net_state_dict'))
     optimizer.load_state_dict(checkpoint.get('optimizer_state_dict'))
-    print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n")
+    print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n", flush=True)
     next_epoch = checkpoint.get('epoch')
 
 for epoch in range(EPOCH - next_epoch):
     running_loss = 0.0
     net.train()
-    print(f'Currently training: {net.training}')
+    print(f'Currently training: {net.training}', flush=True)
     for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH - next_epoch}'):
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
@@ -163,7 +163,7 @@ for epoch in range(EPOCH - next_epoch):
 
     # validation step
     net.eval()
-    print(f'Currently training: {net.training}')
+    print(f'Currently training: {net.training}', flush=True)
     with torch.no_grad():
         # trainacc = compute_accuracy(net, trainloader)
         valacc = compute_accuracy(net, valloader)
@@ -195,7 +195,7 @@ torch.save({
 
 # 7 . test the network
 net.eval()
-print(f'Currently training: {net.training}')
+print(f'Currently training: {net.training}', flush=True)
 testacc = compute_accuracy(net, testloader)
 
-print(f'Testing Accuracy: {testacc}%')
+print(f'Testing Accuracy: {testacc}%', flush=True)
