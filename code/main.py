@@ -47,7 +47,7 @@ test_transform = transforms.Compose([
 ])
 
 # GOOGLE COLAB: CHANGE BATCH_SIZE
-BATCH_SIZE = 256
+BATCH_SIZE = 128
 NUM_WORKERS = 0
 
 trainset = CelebADataset(TRAIN_CSV, ROOT_DIR, train_transform)
@@ -148,7 +148,7 @@ if CONTINUE_TRAIN:
     print(f"Last validation accuracy: {checkpoint.get('valacc')}%\n", flush=True)
     next_epoch = checkpoint.get('epoch')
 
-for epoch in range(EPOCH - next_epoch):
+for epoch in range(next_epoch, EPOCH):
     running_loss = 0.0
     net.train()
     print(f'Currently training: {net.training}', flush=True)
