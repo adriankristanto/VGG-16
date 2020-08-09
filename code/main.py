@@ -152,7 +152,7 @@ for epoch in range(next_epoch, EPOCH):
     running_loss = 0.0
     net.train()
     print(f'Currently training: {net.training}', flush=True)
-    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH - next_epoch}'):
+    for train_data in tqdm(trainloader, desc=f'Epoch {epoch + 1}/{EPOCH}'):
         inputs, labels = train_data[0].to(device), train_data[1].to(device)
         # 5a. zero the gradients
         optimizer.zero_grad()
