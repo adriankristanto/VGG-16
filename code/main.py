@@ -135,7 +135,7 @@ MODEL_DIRPATH = os.path.dirname(os.path.realpath(__file__)) + '/../model/'
 CONTINUE_TRAIN = False
 CONTINUE_TRAIN_NAME = MODEL_DIRPATH + 'model-epoch10.pth'
 # since next_epoch store the next epoch value, we just need to deduct it from EPOCH without adding 1
-EPOCH = 20
+EPOCH = 50
 # save the model every SAVE_INTERVAL epoch
 SAVE_INTERVAL = 5
 ########################################################################
